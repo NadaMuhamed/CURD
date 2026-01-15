@@ -13,13 +13,13 @@ const getAllCourses = async(req, res) => {
   }
 };
 
-const getCourseById = async(req, res) => {
+const getCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
-    if (!course) return res.status(404).json({ msg: 'Course not found' });
+    if (!course) return res.status(404).json({ msg: "Course not found" });
     res.status(200).json(course);
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
+  } catch (err) {
+    return res.status(400).json({ msg: "Invalid ID" });
   }
 };
 
