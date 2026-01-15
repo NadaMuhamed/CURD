@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const endpoint_courses = require('../Controller/endpoints');
-const validateRequest = require('../Middelware/validateRequest');
+const validateRequest = require('../Middleware/validateRequest');
 
 
 
@@ -10,9 +10,9 @@ router.get('/',endpoint_courses.Homepage);
 
 router.get('/courses', endpoint_courses.getAllCourses);
 
-router.get('/course/:id', endpoint_courses.getCourseById );
+router.get('/courses/:id', endpoint_courses.getCourseById );
 
-router.post('/course/', 
+router.post('/courses', 
     [body('name').isString(), 
     body('description').isString(), 
     body('price').isNumeric()],
@@ -20,7 +20,7 @@ router.post('/course/',
     endpoint_courses.createCourse
 );
 
-router.put('/course/:id',
+router.put('/courses/:id',
     [body('name').isString(), 
     body('description').isString(),
     body('price').isNumeric()],
@@ -28,9 +28,9 @@ router.put('/course/:id',
     endpoint_courses.updateCourse
 );
 
-router.delete('/course/:id', endpoint_courses.deleteCourse );
+router.delete('/courses/:id', endpoint_courses.deleteCourse );
 
-router.patch('/course/:id',
+router.patch('/courses/:id',
     [
         body('name').optional().isString(),
         body('description').optional().isString(),
