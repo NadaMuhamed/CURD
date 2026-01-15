@@ -27,7 +27,7 @@ const createCourse = async(req, res) => {
   try {
     const course = new Course({
       name: req.body.name,
-      description: req.body.description,
+      discretion: req.body.discretion,
       price: req.body.price,
     });
     await course.save();
@@ -42,7 +42,7 @@ const updateCourse = async(req, res) => {
     const course = await Course.findById(req.params.id);
     if (!course) return res.status(404).json({ msg: 'Course not found' });
     course.name = req.body.name;
-    course.description = req.body.description;
+    course.discretion = req.body.discretion;
     course.price = req.body.price;
     await course.save();
     res.status(200).json(course);
@@ -66,7 +66,7 @@ const editCourse = async (req, res) => {
     const course = await Course.findById(req.params.id);
     if (!course) return res.status(404).json({ msg: 'Course not found' });
     if (req.body.name !== undefined) course.name = req.body.name;
-    if (req.body.description !== undefined) course.description = req.body.description;
+    if (req.body.discretion !== undefined) course.discretion = req.body.discretion;
     if (req.body.price !== undefined) course.price = req.body.price;
     await course.save();
     res.status(200).json(course);

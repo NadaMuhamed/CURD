@@ -14,7 +14,7 @@ router.get('/courses/:id', endpoint_courses.getCourseById );
 
 router.post('/courses', 
     [body('name').isString(), 
-    body('description').isString(), 
+    body('discretion').isString(), 
     body('price').isNumeric()],
     validateRequest,
     endpoint_courses.createCourse
@@ -22,7 +22,7 @@ router.post('/courses',
 
 router.put('/courses/:id',
     [body('name').isString(), 
-    body('description').isString(),
+    body('discretion').isString(),
     body('price').isNumeric()],
     validateRequest,
     endpoint_courses.updateCourse
@@ -33,7 +33,7 @@ router.delete('/courses/:id', endpoint_courses.deleteCourse );
 router.patch('/courses/:id',
     [
         body('name').optional().isString(),
-        body('description').optional().isString(),
+        body('discretion').optional().isString(),
         body('price').optional().isNumeric(),
     ],
     validateRequest,
