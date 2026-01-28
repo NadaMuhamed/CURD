@@ -1,18 +1,21 @@
 const express = require("express");
 const app = express();
-require("dotenv").config();
-
-const port = process.env.PORT || 8080;
-const mongoose = require("mongoose");
 const CORS = require("cors");
-
-const STATUS = require("./utils/httpStatusText");
-const coursesRoutes = require("./Routes/coursesRoutes");
-
+const mongoose = require("mongoose");
+require("dotenv").config();
 app.use(express.json());
 app.use(CORS());
 
+
+const port = process.env.PORT || 8080;
+
+
+const STATUS = require("./utils/httpStatusText");
+const coursesRoutes = require("./Routes/coursesRoutes");
+const usersRoute = require("./Routes/usersRoute");
+
 app.use("/", coursesRoutes);
+app.use("/users", usersRoute);
 
 // Global Error Handler (fixed)
 app.use((err, req, res, next) => {
