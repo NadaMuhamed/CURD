@@ -26,6 +26,7 @@ const registerUser = asyncWrapper(async(req, res, next) => {
     const salt = await becrypt.genSalt(10);
     user.password = await becrypt.hash(user.password, salt);
     await user.save();
+    delete user.password;
     res.status(201).json({ status: STATUS.SUCCESS, data: user });
 })
 
