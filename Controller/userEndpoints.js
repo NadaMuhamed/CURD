@@ -39,7 +39,24 @@ const registerUser = asyncWrapper(async (req, res, next) => {
 })
 
 const LoginUser = asyncWrapper(async (req, res, next) => {
-
+    const { email, password } = req.body;
+    if (!email || !password) {
+        const error = new AppError("Email and password are required", 400);
+        return next(error);
+    }
+    const user = await User.findOne({ email: email });
+    if (!user) {
+        const error = new AppError("User not found", 404);
+        return next(error);
+    }
+    const isPasswordMatched = await becrypt.compare(password, user.password);
+    if (!isPasswordMatched) {
+        const error = new AppError("Invalid credentials", 401);
+        return next(error);
+    }
+    const userResponse = user.toObject();
+    delete userResponse.password;
+    res.status(200).json({ status: STATUS.SUCCESS, data: { user: userResponse } });
 })
 
 module.exports = {
