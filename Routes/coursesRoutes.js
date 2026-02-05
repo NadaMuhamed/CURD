@@ -4,6 +4,7 @@ const { body } = require("express-validator");
 
 const endpoint_courses = require("../Controller/endpoints");
 const validateRequest = require("../Middleware/validateRequest");
+const { auth, adminAuth } = require("../Middleware/auth");
 
 router.get("/", endpoint_courses.Homepage);
 
@@ -11,8 +12,7 @@ router.get("/courses", endpoint_courses.getAllCourses);
 
 router.get("/courses/:id", endpoint_courses.getCourseById);
 
-router.post(
-  "/courses",
+router.post("/courses", auth, adminAuth,
   [
     body("name").isString().notEmpty(),
     body("discretion").isString().notEmpty(),
@@ -22,8 +22,7 @@ router.post(
   endpoint_courses.createCourse
 );
 
-router.put(
-  "/courses/:id",
+router.put("/courses/:id", auth, adminAuth,
   [
     body("name").isString().notEmpty(),
     body("discretion").isString().notEmpty(),
@@ -33,10 +32,11 @@ router.put(
   endpoint_courses.updateCourse
 );
 
-router.delete("/courses/:id", endpoint_courses.deleteCourse);
+router.delete("/courses/:id", auth, adminAuth,
+  endpoint_courses.deleteCourse
+);
 
-router.patch(
-  "/courses/:id",
+router.patch("/courses/:id", auth, adminAuth,
   [
     body("name").optional().isString(),
     body("discretion").optional().isString(),
