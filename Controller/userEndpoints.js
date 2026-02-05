@@ -31,13 +31,13 @@ const registerUser = asyncWrapper(async (req, res, next) => {
         password: hashedPassword,
         role,
     });
-    const token =  await generateToken({ email:newUser.email , id:newUser._id})
+    const token = await generateToken({ email:newUser.email, id:newUser._id, role:newUser.role })
     newUser.token = token;
     await newUser.save();
     const userResponse = newUser.toObject();
     delete userResponse.password;
 
-    res.status(201).json({ status: STATUS.SUCCESS, data: { user: userResponse, token } });
+    res.status(201).json({ status: STATUS.SUCCESS, data: { user: userResponse } });
 })
 
 const LoginUser = asyncWrapper(async (req, res, next) => {
@@ -56,7 +56,7 @@ const LoginUser = asyncWrapper(async (req, res, next) => {
         const error = new AppError("Invalid credentials", 401);
         return next(error);
     }
-    const token = await generateToken({ email:user.email , id:user._id})
+    const token = await generateToken({ email:user.email, id:user._id, role:user.role })
     const userResponse = user.toObject();
     delete userResponse.password;
     res.status(200).json({ status: STATUS.SUCCESS, data: { user: userResponse, token } });

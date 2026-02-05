@@ -3,8 +3,9 @@ const router = express.Router();
 const { body } = require("express-validator");
 const validateRequest = require("../Middleware/validateRequest");
 const endpoint_users = require("../Controller/userEndpoints");
- 
-router.get("/allusers", endpoint_users.getAllUsers);
+const { auth, adminAuth } = require("../Middleware/auth");
+
+router.get("/allusers", auth, adminAuth, endpoint_users.getAllUsers);
 
 router.post(
   "/register",
