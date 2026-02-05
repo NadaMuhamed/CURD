@@ -17,7 +17,7 @@ const getAllUsers = asyncWrapper(async (req, res, next) => {
 });
 
 const registerUser = asyncWrapper(async (req, res, next) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, role } = req.body;
     const oldUser = await User.findOne({ email: email });
     if (oldUser) {
         const error = new AppError("User already exists", 400);
@@ -31,13 +31,13 @@ const registerUser = asyncWrapper(async (req, res, next) => {
         password: hashedPassword,
         role,
     });
-    const genToken =  await generateToken({ email:newUser.email , id:newUser._id})
-    newUser.token = genToken;
+    const token =  await generateToken({ email:newUser.email , id:newUser._id})
+    newUser.token = token;
     await newUser.save();
     const userResponse = newUser.toObject();
     delete userResponse.password;
 
-    res.status(201).json({ status: STATUS.SUCCESS, data: { user: userResponse,genToken } });
+    res.status(201).json({ status: STATUS.SUCCESS, data: { user: userResponse, token } });
 })
 
 const LoginUser = asyncWrapper(async (req, res, next) => {
